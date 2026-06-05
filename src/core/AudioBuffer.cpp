@@ -353,8 +353,10 @@ auto AudioBuffer::absPeakValue(ch_cnt_t channel) const -> float
 		// Skip calculation if channel is already known to be silent
 		return 0;
 	}
-
-	return std::ranges::max(buffer(channel), {}, static_cast<float(&)(float)>(std::abs));
+	
+	const auto minmax = std::ranges::minmax(buffer(channel), {});
+	
+	return std::abs( minmax.max - minmax.min );
 }
 
 } // namespace lmms
